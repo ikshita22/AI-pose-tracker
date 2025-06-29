@@ -1,0 +1,759 @@
+/* Complete CSS for Fitness Tracker - Save as FitnessTracker.css */
+/* Angle display styles for joint visualization */
+.angle-display {
+  position: absolute;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Exercise status box (like in the counter example) */
+.status-box {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(245, 117, 16, 0.85);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  font-family: monospace;
+  z-index: 10;
+}
+
+.status-box-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: black;
+}
+
+.status-box-value {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Form correction indicators */
+.form-indicator {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: pulse 1.5s infinite;
+  z-index: 5;
+}
+
+.form-indicator.good {
+  background: #10b981;
+  animation: pulse-green 1.5s infinite;
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* Exercise-specific guidance overlays */
+.exercise-guidance {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  text-align: center;
+  max-width: 80%;
+  z-index: 10;
+  backdrop-filter: blur(5px);
+}
+
+/* Skeleton visualization enhancements */
+.skeleton-line {
+  stroke-width: 3px;
+  stroke-linecap: round;
+}
+
+/* Rep counter animation */
+@keyframes rep-complete {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.rep-animate {
+  animation: rep-complete 0.5s ease;
+}
+
+/* Exercise progress bar */
+.exercise-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 10;
+}
+
+.exercise-progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, #06b6d4, #3b82f6);
+  border-radius: 0 3px 3px 0;
+  transition: width 0.3s ease;
+}
+
+/* Additional exercise buttons styles */
+.exercise-btn.bicep-curl {
+  background: linear-gradient(to right, #8b5cf6, #7c3aed);
+}
+
+.exercise-btn.toe-touch {
+  background: linear-gradient(to right, #10b981, #059669);
+}
+
+.exercise-btn.jumping-jack {
+  background: linear-gradient(to right, #f59e0b, #d97706);
+}
+
+/* Camera feed styling */
+.video-element {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+.overlay-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Keypoint highlighting */
+.highlighted-keypoint {
+  fill: #3b82f6;
+  stroke: white;
+  stroke-width: 2;
+  animation: highlight-pulse 1.5s infinite;
+}
+
+@keyframes highlight-pulse {
+  0% { r: 6; }
+  50% { r: 8; }
+  100% { r: 6; }
+}
+
+/* Responsive adjustments for video container */
+@media (max-width: 640px) {
+  .status-box {
+    top: 5px;
+    left: 5px;
+    padding: 6px 10px;
+  }
+  
+  .status-box-title {
+    font-size: 12px;
+  }
+  
+  .status-box-value {
+    font-size: 20px;
+  }
+  
+  .exercise-guidance {
+    font-size: 12px;
+    padding: 8px 16px;
+    bottom: 10px;
+  }
+}
+
+/* Dark mode toggle (optional) */
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #3b82f6;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Connection line styles */
+.connection-line {
+  stroke: #10b981;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Specific exercise connection colors */
+.connection-upper-body {
+  stroke: #3b82f6;
+}
+
+.connection-lower-body {
+  stroke: #10b981;
+}
+
+.connection-core {
+  stroke: #f59e0b;
+}
+
+
+
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.fitness-app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e1b4b 0%, #1e3a8a 25%, #312e81 50%, #4338ca 75%, #3730a3 100%);
+  color: white;
+  padding: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(to right, #22d3ee, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+/* Exercise Selection */
+.exercise-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #67e8f9;
+}
+
+.exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.exercise-btn {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #374151;
+  color: white;
+  font-size: 1rem;
+}
+
+.exercise-btn:hover {
+  background: #4b5563;
+  transform: scale(1.02);
+}
+
+.exercise-btn.active {
+  background: linear-gradient(to right, #06b6d4, #3b82f6);
+  box-shadow: 0 10px 25px rgba(6, 182, 212, 0.25);
+  transform: scale(1.05);
+}
+
+.exercise-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Statistics */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #1f2937;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid #374151;
+  transition: border-color 0.3s ease;
+}
+
+.stat-card:hover {
+  border-color: #06b6d4;
+}
+
+.stat-label {
+  color: #06b6d4;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label.green {
+  color: #10b981;
+}
+
+.stat-label.purple {
+  color: #a855f7;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.stat-value.green {
+  color: #10b981;
+}
+
+/* Feedback Display */
+.feedback-display {
+  background: linear-gradient(to right, #3730a3, #7c3aed);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border: 1px solid #7c3aed;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.feedback-display p {
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+}
+
+/* Video Container */
+.video-container {
+  position: relative;
+  background: #000;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #374151;
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(135deg, #1f2937, #111827);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.camera-icon {
+  width: 96px;
+  height: 96px;
+  background: linear-gradient(to right, #06b6d4, #3b82f6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.video-title {
+  color: #9ca3af;
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+.video-subtitle {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.rep-counter {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #10b981;
+}
+
+.rep-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #10b981;
+}
+
+.rep-label {
+  font-size: 0.75rem;
+  color: #d1d5db;
+}
+
+.status-indicator {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ef4444;
+}
+
+.status-dot.active {
+  background: #10b981;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.status-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.control-btn:hover {
+  transform: scale(1.05);
+}
+
+.control-btn.success {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+}
+
+.control-btn.success:hover {
+  background: #059669;
+}
+
+.control-btn.danger {
+  background: #ef4444;
+  color: white;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.25);
+}
+
+.control-btn.danger:hover {
+  background: #dc2626;
+}
+
+.control-btn.warning {
+  background: #f59e0b;
+  color: white;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
+}
+
+.control-btn.warning:hover {
+  background: #d97706;
+}
+
+.control-btn.secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.control-btn.secondary:hover {
+  background: #4b5563;
+}
+
+.control-btn.primary {
+  background: #7c3aed;
+  color: white;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25);
+}
+
+.control-btn.primary:hover {
+  background: #6d28d9;
+}
+
+/* Pose Data Section */
+.pose-data-section {
+  background: #1f2937;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid #374151;
+  margin-bottom: 2rem;
+}
+
+.pose-data-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #67e8f9;
+}
+
+.pose-data-description {
+  color: #d1d5db;
+  margin-bottom: 1.5rem;
+}
+
+.pose-points-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.pose-point {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #374151;
+  border: 1px solid #4b5563;
+}
+
+.pose-point:hover {
+  background: #4b5563;
+  border-color: #6b7280;
+}
+
+.pose-point.highlighted {
+  background: linear-gradient(to right, #0891b2, #1d4ed8);
+  box-shadow: 0 4px 15px rgba(8, 145, 178, 0.3);
+  transform: scale(1.02);
+  border-color: #06b6d4;
+}
+
+.point-name {
+  font-weight: 600;
+  color: #67e8f9;
+  margin-bottom: 0.5rem;
+}
+
+.point-coords {
+  font-size: 0.875rem;
+  color: #d1d5db;
+  font-family: 'Courier New', monospace;
+}
+
+.point-details {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detail-section {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+}
+
+.detail-title {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.detail-title.normalized {
+  color: #fbbf24;
+}
+
+.detail-title.pixel {
+  color: #10b981;
+}
+
+.detail-title.world {
+  color: #a855f7;
+}
+
+.detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.detail-value {
+  font-family: 'Courier New', monospace;
+  color: #e5e7eb;
+}
+
+.no-pose {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #9ca3af;
+  padding: 2rem;
+}
+
+/* Features Section */
+.features-section {
+  background: #1f2937;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid #374151;
+}
+
+.features-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #67e8f9;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.feature-group-title {
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.feature-list {
+  color: #d1d5db;
+  font-size: 0.875rem;
+  padding-left: 1.25rem;
+}
+
+.feature-list li {
+  margin-bottom: 0.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .fitness-app {
+    padding: 1rem;
+  }
+  
+  .main-title {
+    font-size: 2rem;
+  }
+  
+  .exercise-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .control-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .pose-points-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .exercise-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .video-placeholder {
+    height: 300px;
+  }
+  
+  .rep-counter {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .rep-number {
+    font-size: 1.25rem;
+  }
+}
